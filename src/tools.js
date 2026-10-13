@@ -115,6 +115,58 @@ export function registerTools(server, gsc, canWrite) {
   );
 
   server.registerTool(
+    "inspect_urls",
+    {
+      title: "Inspect URLs (batch)",
+      description:
+        "Inspects up to 100 URLs of the property and returns a compact summary per URL (coverage, verdict, last crawl, " +
+        "declared vs. Google-selected canonical) plus a count per coverage state. Each URL consumes one unit of the " +
+        "URL Inspection quota (2000 per day and 600 per minute per property).",
+      inputSchema: {
+        siteUrl,
+        inspectionUrls: z.array(z.string().url()).min(1).max(100).describe("Full URLs to inspect; they must belong to siteUrl."),
+        languageCode: z.string().optional().describe('Language for translated messages, e.g. "es" or "en-US".'),
+      },
+      annotations: readOnly,
+    },
+    safe(async ({ siteUrl, inspectionUrls, languageCode }) => {
+      const results = new Array(inspectionUrls.length);
+      let next = 0;
+
+      // Cinco consultas en paralelo: rápido sin acercarse al límite de 600 por minuto.
+      const worker = async () => {
+        while (next < inspectionUrls.length) {
+          const index = next++;
+          const url = inspectionUrls[index];
+          try {
+            const { data } = await gsc.urlInspection.index.inspect({ requestBody: { siteUrl, inspectionUrl: url, languageCode } });
+            const status = data.inspectionResult?.indexStatusResult ?? {};
+            results[index] = {
+              url,
+              verdict: status.verdict,
+              coverageState: status.coverageState,
+              lastCrawlTime: status.lastCrawlTime,
+              pageFetchState: status.pageFetchState,
+              userCanonical: status.userCanonical,
+              googleCanonical: status.googleCanonical,
+            };
+          } catch (err) {
+            results[index] = { url, error: err?.response?.data?.error?.message ?? err?.message ?? String(err) };
+          }
+        }
+      };
+      await Promise.all(Array.from({ length: Math.min(5, inspectionUrls.length) }, worker));
+
+      const summary = {};
+      for (const r of results) {
+        const key = r.error ? "error" : r.coverageState ?? "unknown";
+        summary[key] = (summary[key] ?? 0) + 1;
+      }
+      return { summary, results };
+    }),
+  );
+
+  server.registerTool(
     "list_sitemaps",
     {
       title: "List sitemaps",
