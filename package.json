@@ -1,0 +1,43 @@
+{
+  "name": "scientia-gsc-mcp",
+  "version": "1.0.0",
+  "description": "Servidor MCP mínimo y auditable para consultar Google Search Console con tus propias credenciales OAuth.",
+  "author": "Scientia (https://scientia.dev)",
+  "homepage": "https://scientia.dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScientiaIT/scientia-gsc-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ScientiaIT/scientia-gsc-mcp/issues"
+  },
+  "type": "module",
+  "bin": {
+    "scientia-gsc-mcp": "src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "start": "node src/index.js",
+    "auth": "node src/index.js auth",
+    "check": "node --check src/index.js && node --check src/auth.js && node --check src/config.js && node --check src/tools.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "google-search-console",
+    "seo",
+    "claude"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@googleapis/searchconsole": "^11.0.1",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "google-auth-library": "^11.3.0",
+    "zod": "^4.6.7"
+  }
+}

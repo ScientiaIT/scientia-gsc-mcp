@@ -1,0 +1,6 @@
+node_modules/
+
+# Credenciales: nunca deben llegar al repositorio
+client_secret*.json
+token.json
+.scientia/
