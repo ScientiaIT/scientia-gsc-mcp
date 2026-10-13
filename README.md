@@ -3,7 +3,7 @@
 Servidor [MCP](https://modelcontextprotocol.io) para consultar **Google Search Console** desde Claude
 (u otro cliente MCP) con **tus propias credenciales OAuth**.
 
-Desarrollado por [Scientia &reg; Soluciones Informáticas](https://scientia.dev).
+Desarrollado por [Scientia&reg; Soluciones Informáticas](https://scientia.dev).
 
 ## ¿Por qué otro servidor de Search Console?
 
@@ -22,7 +22,7 @@ Google no publica un MCP oficial para Search Console, y darle acceso a tu cuenta
 | `list_sites`       | Lista las propiedades a las que tiene acceso la cuenta.             |                    |
 | `search_analytics` | Clics, impresiones, CTR y posición por consulta, página, país, etc. |                    |
 | `inspect_url`      | Estado de indexación de una URL: cobertura, rastreo, canónica, etc. |                    |
-| `inspect_urls`     | Inspecciona hasta 100 URLs de una vez, con un resumen por estado.        |                    |
+| `inspect_urls`     | Inspecciona hasta 100 URLs de una vez, con un resumen por estado.   |                    |
 | `list_sitemaps`    | Sitemaps enviados, con errores, advertencias y cantidad de URLs.    |                    |
 | `get_sitemap`      | Detalle de un sitemap.                                              |                    |
 | `submit_sitemap`   | Envía o reenvía un sitemap.                                         |         ✔          |
@@ -158,4 +158,4 @@ Todas son opcionales.
 
 ## Licencia
 
-[MIT](LICENSE) © [Scientia](https://scientia.dev)
+[MIT](LICENSE) © [Scientia&reg; Soluciones Informáticas](https://scientia.dev)
